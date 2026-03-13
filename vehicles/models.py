@@ -13,6 +13,28 @@ class Brand(models.Model):
         return self.name
 
 
+class Model(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Nome do Modelo')
+
+    class Meta:
+        verbose_name = 'Modelo do Veículo'
+        verbose_name_plural = 'Modelos dos Veículos'
+
+    def __str__(self):
+        return self.name
+
+
+class Color(models.Model):
+    name = models.CharField(max_length=50, verbose_name='Cor')
+
+    class Meta:
+        verbose_name = 'Cor do Veículo'
+        verbose_name_plural = 'Cor dos Veículos'
+
+    def __str__(self):
+        return self.name
+
+
 class VehicleType(models.Model):
     name = models.CharField(
         max_length=100,
@@ -62,17 +84,21 @@ class Vehicle(models.Model):
         verbose_name='Tipo do Veículo',
         related_name='vehicles',
     )
-    model = models.CharField(
-        max_length=50,
+    model = models.ForeignKey(
+        Model,
+        on_delete=models.PROTECT,
         null=True,
         blank=True,
-        verbose_name='Modelo'
+        verbose_name='Modelo',
+        related_name='vehicles',
     )
-    color = models.CharField(
-        max_length=50,
+    color = models.ForeignKey(
+        Color,
+        on_delete=models.PROTECT,
         null=True,
         blank=True,
-        verbose_name='Cor'
+        verbose_name='Cor',
+        related_name='vehicles',
     )
     created_at = models.DateTimeField(
         auto_now_add=True,

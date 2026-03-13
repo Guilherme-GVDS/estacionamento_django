@@ -6,4 +6,4 @@ class ParkingConfig(AppConfig):
     verbose_name = 'Estacionamento'
 
     def ready(self):
-        import parking.signals  # Importa os sinais para garantir que sejam registrados
+        import parking.signals  # noqa: F401
