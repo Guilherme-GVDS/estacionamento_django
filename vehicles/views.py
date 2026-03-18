@@ -2,8 +2,14 @@ from rest_framework.permissions import DjangoModelPermissions, IsAdminUser
 from rest_framework import viewsets
 
 from vehicles.filters import VehicleFilter, VehicleTypeFilter
-from .models import VehicleType, Vehicle
-from .serializers import VehicleSerializer, VehicleTypeSerializer
+from .models import Brand, Color, Model, VehicleType, Vehicle
+from .serializers import (
+    BrandSerializer,
+    ColorSerializer,
+    ModelSerializer,
+    VehicleSerializer,
+    VehicleTypeSerializer
+)
 from core.permissions import IsOwner
 
 
@@ -25,3 +31,21 @@ class VehicleTypeViewSet(viewsets.ModelViewSet):
     serializer_class = VehicleTypeSerializer
     permission_classes = [DjangoModelPermissions, IsAdminUser]
     rql_filter_class = VehicleTypeFilter
+
+
+class BrandViewSet(viewsets.ModelViewSet):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+    permission_classes = [DjangoModelPermissions, IsAdminUser]
+
+
+class ModelViewSet(viewsets.ModelViewSet):
+    queryset = Model.objects.all()
+    serializer_class = ModelSerializer
+    permission_classes = [DjangoModelPermissions, IsAdminUser]
+
+
+class ColorViewSet(viewsets.ModelViewSet):
+    queryset = Color.objects.all()
+    serializer_class = ColorSerializer
+    permission_classes = [DjangoModelPermissions, IsAdminUser]

@@ -187,6 +187,9 @@ JAZZMIN_SETTINGS = {
         "vehicles.VehicleType": "fa-solid fa-car-side",
         "parking.ParkingSpot": "fa-solid fa-parking",
         "parking.ParkingRecord": "fa-solid fa-boxes-stacked",
+        "vehicles.Brand": "fa-solid fa-copyright",
+        "vehicles.Model": "fa-solid fa-copyright",
+        "vehicles.Color": "fa-solid fa-palette",
     },
     # Icons that are used when one is not manually specified
     # "default_icon_parents": "fas fa-chevron-circle-right",

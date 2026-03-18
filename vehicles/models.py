@@ -6,8 +6,8 @@ class Brand(models.Model):
     name = models.CharField(max_length=100, verbose_name='Nome da Marca')
 
     class Meta:
-        verbose_name = 'Marca do Veículo'
-        verbose_name_plural = 'Marcas dos Veículos'
+        verbose_name = 'Marca'
+        verbose_name_plural = 'Marcas'
 
     def __str__(self):
         return self.name
@@ -17,8 +17,8 @@ class Model(models.Model):
     name = models.CharField(max_length=100, verbose_name='Nome do Modelo')
 
     class Meta:
-        verbose_name = 'Modelo do Veículo'
-        verbose_name_plural = 'Modelos dos Veículos'
+        verbose_name = 'Modelo'
+        verbose_name_plural = 'Modelos'
 
     def __str__(self):
         return self.name
@@ -28,8 +28,8 @@ class Color(models.Model):
     name = models.CharField(max_length=50, verbose_name='Cor')
 
     class Meta:
-        verbose_name = 'Cor do Veículo'
-        verbose_name_plural = 'Cor dos Veículos'
+        verbose_name = 'Cor'
+        verbose_name_plural = 'Cores'
 
     def __str__(self):
         return self.name
