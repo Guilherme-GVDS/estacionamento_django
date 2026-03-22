@@ -9,6 +9,8 @@ services:
       - parking_db
     env_file:
       - .env
+    volumes:
+      - .:/estacionamento_django 
 
   parking_db:
     image: postgres:15
