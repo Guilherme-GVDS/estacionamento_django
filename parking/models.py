@@ -21,6 +21,7 @@ class ParkingSpot(models.Model):
     class Meta:
         verbose_name = 'Vaga de Estacionamento'
         verbose_name_plural = 'Vagas de Estacionamento'
+        ordering = ['spot_number']
 
     def __str__(self):
         return self.spot_number
@@ -52,6 +53,7 @@ class ParkingRecord(models.Model):
     class Meta:
         verbose_name = 'Registro de Estacionamento'
         verbose_name_plural = 'Registros de Estacionamento'
+        ordering = ['-entry_time']
 
     def __str__(self):
         return f'{self.vehicle} | Vaga {self.parking_spot} | {self.entry_time}'
