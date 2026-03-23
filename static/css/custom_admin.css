@@ -3,6 +3,8 @@
 .nav-sidebar *,
 .nav-user-info *,
 .nav-user-info,
-span.d-md-inline {
+span.d-md-inline,
+span.d-block.opacity-75 {
     color: #ffffff !important;
+    opacity: 1 !important;
 }

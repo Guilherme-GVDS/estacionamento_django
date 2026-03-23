@@ -1,5 +1,8 @@
 #sidebar-wrapper *,
 .main-sidebar *,
-.nav-sidebar * {
+.nav-sidebar *,
+.nav-user-info *,
+.nav-user-info,
+span.d-md-inline {
     color: #ffffff !important;
 }
