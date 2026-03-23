@@ -1,15 +1,17 @@
 # 🅿️ Parking Service
 
-Sistema de gerenciamento de estacionamento desenvolvido com Django e Django REST Framework, com painel administrativo, API RESTful, autenticação JWT e containerização via Docker.
+Sistema de gerenciamento de estacionamento desenvolvido com Django e Django REST Framework. O Django Admin é utilizado como **backoffice** para operações internas, com API RESTful, autenticação JWT e containerização via Docker.
+
+> ⚠️ **Este projeto é um MVP (Minimum Viable Product).** A estrutura atual atende aos requisitos essenciais de operação, com espaço planejado para evoluções futuras descritas ao final deste documento.
 
 ---
 
 ## 📋 Funcionalidades
 
-- Painel administrativo com Jazzmin
+- Backoffice administrativo com Django Admin (tema Jazzmin)
 - API RESTful com autenticação JWT
 - Cadastro de clientes, veículos, vagas e registros de entrada/saída
-- Status de vagas atualizado automaticamente via signals
+- Status de vagas atualizado automaticamente via Django Signals
 - Filtros avançados com RQL
 - Documentação da API com Swagger e Redoc
 - Permissões diferenciadas entre admin, funcionário e cliente
@@ -28,7 +30,21 @@ Sistema de gerenciamento de estacionamento desenvolvido com Django e Django REST
 - **RQL** — `dj-rql`
 - **Swagger** — `drf-spectacular`
 - **Jazzmin** — tema para o Django Admin
+- **Whitenoise** — servir arquivos estáticos em produção
 - **python-decouple** — gerenciamento de variáveis de ambiente
+
+---
+
+## 🏗️ Arquitetura
+
+O projeto é dividido em quatro apps Django principais:
+
+- **`authentication`** — configuração de autenticação JWT
+- **`customers`** — gerenciamento de clientes
+- **`vehicles`** — gerenciamento de veículos, marcas, modelos, cores e tipos
+- **`parking`** — gerenciamento de vagas e registros de entrada/saída
+
+O **Django Admin** funciona como backoffice, sendo a interface principal para operadores e administradores gerenciarem os dados do sistema. O controle de ocupação das vagas é feito automaticamente via **Django Signals**: ao salvar um `ParkingRecord`, o status da vaga é atualizado de acordo com a presença ou ausência de `exit_time`.
 
 ---
 
@@ -48,8 +64,6 @@ cd estacionamento_django
 
 ### 2. Configure as variáveis de ambiente
 
-Copie o arquivo de exemplo e preencha com seus dados:
-
 ```bash
 cp .env.example .env
 ```
@@ -65,6 +79,7 @@ DB_USER=seu_usuario
 DB_PASSWORD=sua_senha
 DB_HOST=parking_db
 DB_PORT=5432
+CSRF_TRUSTED_ORIGINS=https://seu-dominio.com
 ```
 
 ### 3. Suba os containers
@@ -144,7 +159,7 @@ estacionamento_django/
 ├── customers/            # App de clientes
 ├── vehicles/             # App de veículos (marca, modelo, cor, tipo)
 ├── parking/              # App de vagas e registros
-├── static/               # Arquivos estáticos (logo, etc.)
+├── static/               # Arquivos estáticos (logo, CSS customizado, etc.)
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
@@ -153,18 +168,35 @@ estacionamento_django/
 
 ---
 
-## 🔑 Exemplo de Perfis de Acesso
+## 🔑 Perfis de Acesso
 
 | Perfil | Acesso |
 |--------|--------|
-| **Admin** | Acesso total à API, ao painel administrativo e gerenciamento de usuários |
-| **Funcionário** | Cadastra e edita clientes e veículos, além de criar e alterar registros de estacionamento. Não possui acesso ao painel administrativo nem ao gerenciamento de usuários |
+| **Admin** | Acesso total à API, ao backoffice (Django Admin) e gerenciamento de usuários |
+| **Funcionário** | Cadastra e edita clientes e veículos, cria e altera registros de estacionamento. Sem acesso ao Django Admin nem ao gerenciamento de usuários |
 | **Cliente** | Visualiza apenas seus próprios veículos e registros de estacionamento via API |
 
 ---
 
-## 🧑‍💻 Painel Administrativo
+## 🧑‍💻 Backoffice (Django Admin)
 
 Acesse em: `http://localhost:8000/`
 
-Login com o superusuário criado anteriormente.
+O Django Admin é utilizado como interface de backoffice para operadores e administradores. Através dele é possível gerenciar todos os recursos do sistema, incluindo clientes, veículos, vagas e registros, com filtros, buscas e controle de permissões por grupo de usuário.
+
+---
+
+## 🔭 Melhorias Planejadas (Pós-MVP)
+
+### Autopreenchimento de veículos via API de placas
+
+Atualmente, o cadastro de veículos exige o preenchimento manual de marca, modelo e cor. Uma melhoria planejada é a integração com uma API externa de consulta de placas (ex: [FIPE](https://deividfortuna.github.io/fipe/) ou similares), que retornaria automaticamente essas informações a partir da placa informada.
+
+Para não impactar o tempo de resposta da API durante o cadastro, essa integração seria implementada de forma assíncrona utilizando **Celery** com um broker de mensagens (ex: Redis). O fluxo seria:
+
+1. O veículo é cadastrado com apenas a placa
+2. A API retorna imediatamente com sucesso
+3. Uma task Celery é enfileirada em background
+4. A task consulta a API de placas e atualiza os campos `brand`, `model` e `color` no banco de dados automaticamente
+
+Isso garante que o uso da API não seja afetado pela latência de serviços externos.
