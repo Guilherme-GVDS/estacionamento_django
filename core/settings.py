@@ -139,6 +139,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 JAZZMIN_SETTINGS = {
+    "theme": "darkly",
     # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Parking Service",
 
