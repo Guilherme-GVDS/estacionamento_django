@@ -1,5 +1,5 @@
-.user-panel .info,
-.user-panel .info a,
-.user-panel .info p {
+#sidebar-wrapper *,
+.main-sidebar *,
+.nav-sidebar * {
     color: #ffffff !important;
 }
